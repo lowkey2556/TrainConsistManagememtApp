@@ -4,58 +4,37 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuantityMeasurementAppTest {
 
     @Test
-    void testCargo_SafeAssignment() {
-        Train.GoodsBogie bogie = new Train.GoodsBogie("Cylindrical");
-        bogie.assignCargo("Petroleum");
-
-        assertEquals("Petroleum", bogie.cargo);
+    void testSort_BasicSorting() {
+        int[] arr = {72, 56, 24, 70, 60};
+        Train.bubbleSort(arr);
+        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
     }
 
     @Test
-    void testCargo_UnsafeAssignmentHandled() {
-        Train.GoodsBogie bogie = new Train.GoodsBogie("Rectangular");
-
-        Train.CargoSafetyException exception = assertThrows(
-                Train.CargoSafetyException.class,
-                () -> bogie.assignCargo("Petroleum")
-        );
-
-        assertEquals("Unsafe cargo assignment!", exception.getMessage());
+    void testSort_AlreadySortedArray() {
+        int[] arr = {24, 56, 60, 70, 72};
+        Train.bubbleSort(arr);
+        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
     }
 
     @Test
-    void testCargo_CargoNotAssignedAfterFailure() {
-        Train.GoodsBogie bogie = new Train.GoodsBogie("Rectangular");
-
-        assertThrows(
-                Train.CargoSafetyException.class,
-                () -> bogie.assignCargo("Petroleum")
-        );
-
-        assertNull(bogie.cargo);
+    void testSort_DuplicateValues() {
+        int[] arr = {72, 56, 56, 24};
+        Train.bubbleSort(arr);
+        assertArrayEquals(new int[]{24, 56, 56, 72}, arr);
     }
 
     @Test
-    void testCargo_ProgramContinuesAfterException() {
-        Train.GoodsBogie unsafeBogie = new Train.GoodsBogie("Rectangular");
-        Train.GoodsBogie safeBogie = new Train.GoodsBogie("Cylindrical");
-
-        assertThrows(
-                Train.CargoSafetyException.class,
-                () -> unsafeBogie.assignCargo("Petroleum")
-        );
-
-        safeBogie.assignCargo("Coal");
-        assertEquals("Coal", safeBogie.cargo);
+    void testSort_SingleElementArray() {
+        int[] arr = {50};
+        Train.bubbleSort(arr);
+        assertArrayEquals(new int[]{50}, arr);
     }
 
     @Test
-    void testCargo_FinallyBlockExecution() {
-        Train.GoodsBogie bogie = new Train.GoodsBogie("Rectangular");
-
-        assertThrows(
-                Train.CargoSafetyException.class,
-                () -> bogie.assignCargo("Petroleum")
-        );
+    void testSort_AllEqualValues() {
+        int[] arr = {40, 40, 40};
+        Train.bubbleSort(arr);
+        assertArrayEquals(new int[]{40, 40, 40}, arr);
     }
 }
