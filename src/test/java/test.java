@@ -4,44 +4,42 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuantityMeasurementAppTest {
 
     @Test
-    void testBinarySearch_BogieFound() {
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        assertTrue(Train.binarySearch(bogieIds, "BG309"));
-    }
-
-    @Test
-    void testBinarySearch_BogieNotFound() {
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        assertFalse(Train.binarySearch(bogieIds, "BG999"));
-    }
-
-    @Test
-    void testBinarySearch_FirstElementMatch() {
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        assertTrue(Train.binarySearch(bogieIds, "BG101"));
-    }
-
-    @Test
-    void testBinarySearch_LastElementMatch() {
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        assertTrue(Train.binarySearch(bogieIds, "BG550"));
-    }
-
-    @Test
-    void testBinarySearch_SingleElementArray() {
-        String[] bogieIds = {"BG101"};
-        assertTrue(Train.binarySearch(bogieIds, "BG101"));
-    }
-
-    @Test
-    void testBinarySearch_EmptyArray() {
+    void testSearch_ThrowsExceptionWhenEmpty() {
         String[] bogieIds = {};
-        assertFalse(Train.binarySearch(bogieIds, "BG101"));
+
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> Train.searchBogie(bogieIds, "BG101")
+        );
+
+        assertEquals("No bogies available in train. Cannot perform search.", exception.getMessage());
     }
 
     @Test
-    void testBinarySearch_UnsortedInputHandled() {
-        String[] bogieIds = {"BG309", "BG101", "BG550", "BG205", "BG412"};
-        assertTrue(Train.binarySearch(bogieIds, "BG205"));
+    void testSearch_AllowsSearchWhenDataExists() {
+        String[] bogieIds = {"BG101", "BG205"};
+
+        assertDoesNotThrow(() -> Train.searchBogie(bogieIds, "BG101"));
+    }
+
+    @Test
+    void testSearch_BogieFoundAfterValidation() {
+        String[] bogieIds = {"BG101", "BG205", "BG309"};
+
+        assertTrue(Train.searchBogie(bogieIds, "BG205"));
+    }
+
+    @Test
+    void testSearch_BogieNotFoundAfterValidation() {
+        String[] bogieIds = {"BG101", "BG205", "BG309"};
+
+        assertFalse(Train.searchBogie(bogieIds, "BG999"));
+    }
+
+    @Test
+    void testSearch_SingleElementValidCase() {
+        String[] bogieIds = {"BG101"};
+
+        assertTrue(Train.searchBogie(bogieIds, "BG101"));
     }
 }

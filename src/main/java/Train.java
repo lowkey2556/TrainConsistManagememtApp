@@ -1,23 +1,15 @@
-import java.util.Arrays;
-
 public class Train {
 
-    static boolean binarySearch(String[] bogieIds, String key) {
-        Arrays.sort(bogieIds);
+    static boolean searchBogie(String[] bogieIds, String searchId) {
+        // FAIL-FAST VALIDATION
+        if (bogieIds.length == 0) {
+            throw new IllegalStateException("No bogies available in train. Cannot perform search.");
+        }
 
-        int low = 0;
-        int high = bogieIds.length - 1;
-
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            int comparison = key.compareTo(bogieIds[mid]);
-
-            if (comparison == 0) {
+        // SEARCH LOGIC
+        for (String id : bogieIds) {
+            if (id.equals(searchId)) {
                 return true;
-            } else if (comparison < 0) {
-                high = mid - 1;
-            } else {
-                low = mid + 1;
             }
         }
 
@@ -26,30 +18,24 @@ public class Train {
 
     public static void main(String[] args) {
         System.out.println("==========================================");
-        System.out.println(" UC19 - Binary Search for Bogie ID ");
-        System.out.println("==========================================\n");
-
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-
-        Arrays.sort(bogieIds);
-
-        String key = "BG309";
-
-        System.out.println("Sorted Bogie IDs:");
-        for (String id : bogieIds) {
-            System.out.println(id);
-        }
+        System.out.println(" UC20 - Exception Handling During Search ");
+        System.out.println("==========================================");
         System.out.println();
 
-        boolean found = binarySearch(bogieIds, key);
+        // Create bogie array (empty train scenario)
+        String[] bogieIds = {};
+
+        // Search key
+        String searchId = "BG101";
+
+        boolean found = searchBogie(bogieIds, searchId);
 
         if (found) {
-            System.out.println("Bogie " + key + " found using Binary Search.");
+            System.out.println("Bogie " + searchId + " found in train consist.");
         } else {
-            System.out.println("Bogie " + key + " not found using Binary Search.");
+            System.out.println("Bogie " + searchId + " not found in train consist.");
         }
 
-        System.out.println();
-        System.out.println("UC19 search completed...");
+        System.out.println("\nUC20 execution completed...");
     }
 }
